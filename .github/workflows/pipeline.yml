@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches: [master]
+    types: [opened, synchronize]
 
 jobs:
   simple_deployment_pipeline:
@@ -29,6 +32,7 @@ jobs:
           wait-on: http://localhost:5000
       - name: heroku deploy
         uses: akhileshns/heroku-deploy@v3.12.12
+        if: ${{ github.event_name == 'push' }}
         with:
           heroku_api_key: ${{secrets.HEROKU_API_KEY}}
           heroku_app_name: tranquil-springs-25213
@@ -36,3 +40,14 @@ jobs:
           healthcheck: https://tranquil-springs-25213.herokuapp.com/health
           checkstring: "health ok"
           rollbackonhealthcheckfailed: true
+  tag_release:  
+    needs: [simple_deployment_pipeline]
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.36.0
+        if: ${{ github.event_name == 'push' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WITH_V: true
+          DEFAULT_BUMP: patch
