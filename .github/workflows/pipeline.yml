@@ -40,29 +40,13 @@ jobs:
           healthcheck: https://tranquil-springs-25213.herokuapp.com/health
           checkstring: "health ok"
           rollbackonhealthcheckfailed: true
-  a_test_job:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: gihub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
-      - name: commits
-        env:
-          COMMITS: ${{ toJson(github.event.commits) }}
-        run: echo "$COMMITS"
-      - name: commit messages
-        env:
-          COMMIT_MESSAGES: ${{ toJson(github.event.commits.*.message) }}
-        run: echo "$COMMIT_MESSAGES"
   tag_release:  
-    if: ${{ github.event_name == 'push' && contains(join(toJSon(github.event.commits.*.message)), "skip" }}
+    if: ${{ github.event_name == 'push' && contains(join(toJSon(github.event.commits.*.message)), 'skip') }}
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
     steps:
       - run: echo join(toJSon(github.event.commits.*.message))
-      - run: contains(join(toJSon(github.event.commits.*.message)), "skip"
+      - run: echo contains(join(toJSon(github.event.commits.*.message)), "skip")
       - uses: actions/checkout@v3
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.36.0
