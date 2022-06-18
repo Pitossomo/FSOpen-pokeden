@@ -6,11 +6,16 @@ on:
       - master
 
 jobs:
-  echoContext:
+  echoCommits:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - name: Echo context
+      - name: Echo commits
         env:
           GITHUB_COMMITS: ${{ toJson(github.event.commits) }}
         run: echo "$GITHUB_COMMITS"
+      - name: Echo last commit
+        env:
+          GITHUB_LAST_COMMIT: ${{ toJson(github.event.commits[0]) }}
+        run: echo "$GITHUB_LAST_COMMIT"
+      
