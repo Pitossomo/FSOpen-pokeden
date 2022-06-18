@@ -2,7 +2,13 @@
 
 This repository is used for the CI/CD module of the Full stack open course
 
-Fork the repository to complete course exercises
+It teaches how to implement a deploying workflow, including the steps for:
+  - linting,
+  - testing,
+  - deploying,
+  - versioning,
+  - tagging,
+  - etc.   
 
 ## Commands
 
