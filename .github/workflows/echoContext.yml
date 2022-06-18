@@ -10,12 +10,8 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
-      - name: Echo commits
-        env:
-          GITHUB_COMMITS: ${{ toJson(github.event.commits) }}
-        run: echo "$GITHUB_COMMITS"
       - name: Echo last commit
         env:
-          GITHUB_LAST_COMMIT: ${{ toJson(github.event.commits[github.event.commits.length - 1]) }}
+          GITHUB_LAST_COMMIT: ${{ toJson(github.event.head_commit) }}
         run: echo "$GITHUB_LAST_COMMIT"
       
