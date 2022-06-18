@@ -51,12 +51,12 @@ jobs:
       - name: Notify failure
         uses: rjstone/discord-webhook-notify@v1
         if: ${{ failure() }}
+        env:
+            LAST_COMMIT_URL: ${{ toJson(github.event.head_commit.url) }}
+            LAST_COMMIT_AUTHOR: ${{ toJSon(github.event.head_commit.author.username) }} 
         with:
           severity: error
           description: Deployment failed!
-          env:
-            LAST_COMMIT_URL: ${{ toJson(github.event.head_commit.url) }}
-            LAST_COMMIT_AUTHOR: ${{ toJSon(github.event.head_commit.author.username) }} 
           details: commit "$LAST_COMMIT_URL" by "$LAST_COMMIT_AUTHOR" broke the deployment
           webhookURL: ${{ secrets.DISCORD_WEBHOOK }}
   tag_release:  
