@@ -16,6 +16,7 @@ jobs:
         run: echo "$GITHUB_COMMITS"
       - name: Echo last commit
         env:
-          GITHUB_LAST_COMMIT: ${{ toJson(github.event.commits[0]) }}
+          GITHUB_COMMITS_NUM: ${{ github.event.commits.length }}
+          GITHUB_LAST_COMMIT: ${{ toJson(github.event.commits[github.event.commits.length - 1]) }}
         run: echo "$GITHUB_LAST_COMMIT"
       
