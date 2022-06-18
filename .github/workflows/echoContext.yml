@@ -6,9 +6,11 @@ on:
       - master
 
 jobs:
-  hello_world_job:
+  echoContext:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v3
       - name: Echo context
-        run: echo ${{ github }}
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
