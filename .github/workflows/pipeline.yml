@@ -45,14 +45,16 @@ jobs:
         if: ${{ success() }}
         with:
           severity: info
-          details: A new version of pokedex deployed!
+          description: A new version of pokedex deployed!
+          details: to https://tranquil-springs-25213.herokuapp.com/
           webhookURL: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Notify failure
         uses: rjstone/discord-webhook-notify@v1
         if: ${{ failure() }}
         with:
           severity: error
-          details: Deployment failed!
+          description: Deployment failed!
+          details: commit ${{ github.event.repo.url }} by ${{ github.event.actor.login }} broke the deployment
           webhookURL: ${{ secrets.DISCORD_WEBHOOK }}
   tag_release:  
     if: ${{ github.event_name == 'push' && !contains(join(toJSon(github.event.commits.*.message)), 'skip') }}
