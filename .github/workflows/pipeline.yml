@@ -48,7 +48,7 @@ jobs:
         with:
           severity: info
           description: A new version of pokedex deployed!
-          details: to https://tranquil-springs-25213.herokuapp.com/ by ${{ LAST_COMMIT_AUTHOR }}
+          details: to https://tranquil-springs-25213.herokuapp.com/ by ${{ fromJSON(env.LAST_COMMIT_AUTHOR) }}
           webhookURL: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Notify failure
         uses: rjstone/discord-webhook-notify@v1
@@ -59,7 +59,7 @@ jobs:
         with:
           severity: error
           description: Deployment failed!
-          details: commit ${{ LAST_COMMIT_URL }} by ${{ LAST_COMMIT_AUTHOR }} broke the deployment
+          details: commit ${{ fromJSON(env.LAST_COMMIT_URL) }} by ${{ fromJSON(env.LAST_COMMIT_AUTHOR) }} broke the deployment
           webhookURL: ${{ secrets.DISCORD_WEBHOOK }}
   tag_release:  
     if: ${{ github.event_name == 'push' && !contains(join(toJSon(github.event.commits.*.message)), 'skip') }}
